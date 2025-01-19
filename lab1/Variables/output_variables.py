@@ -1,18 +1,24 @@
-x, y, z = "Orange", "Banana", "Cherry"
-print(x) # Orange
-print(y) # Banana
-print(z) # Cherry
+x = "Python is awesome"
+print(x) # Python is awesome
 
-x = y = z = "Orange"
+x = "Python"
+y = "is"
+z = "awesome"
+print(x, y, z) # Python is awesome
 
-print(x) # Orange
-print(y) # Orange
-print(z) # Orange
+x = "Python "
+y = "is "
+z = "awesome"
+print(x + y + z) # Python is awesome
 
-#unpacking
+x = 5
+y = 10
+print(x + y) # 15
 
-fruits = ["apple", "banana", "cherry"]
-x, y, z = fruits
-print(x) # apple
-print(y) # banana
-print(z) # cherry
+x = 5
+y = "John"
+print(x + y) #TypeError: unsupported operand type(s) for +: 'int' and 'str
+
+x = 5
+y = "John"
+print(x, y) # 5 John
