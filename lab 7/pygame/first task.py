@@ -6,14 +6,14 @@ pygame.init()
 screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Mickey Mouse Clock")
 
-clock_img = pygame.image.load(r"C:\Users\Askar\Pictures\images\mickeyclock.jpeg")
+clock_img = pygame.image.load(r"C:\Users\Askar\Pictures\images\clock.png")
 clock_img = pygame.transform.scale(clock_img, (500, 500))
 
-minute_hand = pygame.image.load(r"C:\Users\Askar\Pictures\images\right_hand.jpeg").convert_alpha()
-second_hand = pygame.image.load(r"C:\Users\Askar\Pictures\images\left_hand.jpeg").convert_alpha()
+minute_hand = pygame.image.load(r"C:\Users\Askar\Pictures\images\left_hand.png").convert_alpha()
+second_hand = pygame.image.load(r"C:\Users\Askar\Pictures\images\right_hand.png").convert_alpha()
 
-minute_hand = pygame.transform.scale(minute_hand, (150, 30))
-second_hand = pygame.transform.scale(second_hand, (200, 20))
+minute_hand = pygame.transform.scale(minute_hand, (650, 450))
+second_hand = pygame.transform.scale(second_hand, (600, 400))
 
 center_x, center_y = 250, 250
 
