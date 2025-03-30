@@ -1,17 +1,13 @@
-# Imports
 import pygame, sys
 from pygame.locals import *
 import random
 
-# Initializing pygame
 pygame.init()
 pygame.mixer.init()
 
-# Setting up FPS
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
-# Colors
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -19,7 +15,6 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 
-# Game variables
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
@@ -27,26 +22,20 @@ SCORE = 0
 COINS_COLLECTED = 0
 GAME_OVER = False
 
-# Fonts
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 game_over_text = font.render("Game Over", True, WHITE)
 
 def draw_text_with_outline(surface, text, font, x, y, text_color, outline_color):
-    """Функция для рисования текста с обводкой"""
-    # Рисуем обводку (8 позиций вокруг основного текста)
     outline_surface = font.render(text, True, outline_color)
     for dx, dy in [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]:
         surface.blit(outline_surface, (x + dx, y + dy))
-    # Рисуем основной текст
     text_surface = font.render(text, True, text_color)
     surface.blit(text_surface, (x, y))
 
-# Load background
 background = pygame.image.load(r"C:\Users\Askar\OneDrive - АО Казахстанско-Британский Технический Университет\Рисунки\images\street.jpg")
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Create screen
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Racing Game")
 
@@ -75,12 +64,10 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         pressed_keys = pygame.key.get_pressed()
-        if self.rect.left > 0:
-            if pressed_keys[K_LEFT]:
-                self.rect.move_ip(-5, 0)
-        if self.rect.right < SCREEN_WIDTH:
-            if pressed_keys[K_RIGHT]:
-                self.rect.move_ip(5, 0)
+        if self.rect.left > 0 and pressed_keys[K_LEFT]:
+            self.rect.move_ip(-5, 0)
+        if self.rect.right < SCREEN_WIDTH and pressed_keys[K_RIGHT]:
+            self.rect.move_ip(5, 0)
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
@@ -98,12 +85,10 @@ class Coin(pygame.sprite.Sprite):
     def respawn(self):
         self.rect.center = (random.randint(30, SCREEN_WIDTH-30), 0)
 
-# Create sprites
 P1 = Player()
 E1 = Enemy()
 C1 = Coin()
 
-# Create groups
 enemies = pygame.sprite.Group()
 enemies.add(E1)
 coins = pygame.sprite.Group()
@@ -111,14 +96,11 @@ coins.add(C1)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1, E1, C1)
 
-# Speed increase event
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
 
-# Load sound
 crash_sound = pygame.mixer.Sound(r'C:\Users\Askar\Downloads\crash.mpeg')
 
-# Main Game Loop
 while True:
     for event in pygame.event.get():
         if event.type == INC_SPEED:
@@ -128,7 +110,6 @@ while True:
             sys.exit()
         if GAME_OVER and event.type == KEYDOWN:
             if event.key == K_r:
-                # Reset game
                 GAME_OVER = False
                 SPEED = 5
                 SCORE = 0
@@ -145,27 +126,21 @@ while True:
 
     if not GAME_OVER:
         DISPLAYSURF.blit(background, (0, 0))
-        
-        # Display score and coins with outline for better visibility
         draw_text_with_outline(DISPLAYSURF, f"Score: {SCORE}", font_small, 10, 10, WHITE, BLACK)
         draw_text_with_outline(DISPLAYSURF, f"Coins: {COINS_COLLECTED}", font_small, 10, 40, YELLOW, BLACK)
 
-        # Move and draw all sprites
         for entity in all_sprites:
             DISPLAYSURF.blit(entity.image, entity.rect)
             entity.move()
 
-        # Collision with enemy
         if pygame.sprite.spritecollideany(P1, enemies):
             crash_sound.play()
             GAME_OVER = True
 
-        # Collision with coin
         if pygame.sprite.spritecollideany(P1, coins):
             COINS_COLLECTED += 1
             C1.respawn()
     else:
-        # Game over screen
         DISPLAYSURF.fill(RED)
         draw_text_with_outline(DISPLAYSURF, "Game Over", font, 30, 250, WHITE, BLACK)
         draw_text_with_outline(DISPLAYSURF, "Press R to restart", font_small, 120, 350, WHITE, BLACK)
